@@ -4,10 +4,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-<<<<<<< HEAD
-=======
-
->>>>>>> bbcaf15 (Instagram bot)
 # C extensions
 *.so
 
@@ -79,19 +75,14 @@ docs/_build/
 # PyBuilder
 .pybuilder/
 target/
-<<<<<<< HEAD
 
-=======
-locators/
->>>>>>> bbcaf15 (Instagram bot)
 # Jupyter Notebook
 .ipynb_checkpoints
 
 # IPython
 profile_default/
 ipython_config.py
-<<<<<<< HEAD
-=======
+
 automation.py
 c.py
 CaptchaSolver.py
@@ -101,7 +92,7 @@ locators.py
 penguins.py
 robot_captcha.py
 sc.py
->>>>>>> bbcaf15 (Instagram bot)
+
 
 # pyenv
 #   For a library or package, you might want to ignore these files since the code is
@@ -201,3 +192,5 @@ cython_debug/
 *c.py
 *sc.py
 73aa220 (Script to automate data scrapping over Google Maps.)
+
+locators/
