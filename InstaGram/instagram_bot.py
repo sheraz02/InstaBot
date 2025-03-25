@@ -8,7 +8,7 @@ import os
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 
-
+# Load environment variables
 env = environ.Env()
 environ.Env.read_env()
 
@@ -74,45 +74,56 @@ class InstaBot:
         return reels_container
     
     def like_reel(self):
-        like_button = self.driver.find_element(By.XPATH, "//svg[@aria-label='Like']/ancestor::div[@role='button']")
+        like_button = self.driver.find_element(By.XPATH, '//svg[@aria-label="Like"]/ancestor::div[@role="button"]')
+
+
         return like_button
     
-    def like_post(self):
-        try:
-            like_button = self.driver.find_element(By.XPATH, "//span[@aria-label='Like']")  
-            like_button.click()
-            print("Liked the post!")
-        except Exception as e:
-            print("Like button not found:", e)
 
-        self.driver.save_screenshot("liked_post.png")
-    
-    def main_click(self):
-        try:
-            self.driver.find_element(By.CSS_SELECTOR, "main[role='main']").click()
-        except:
-            print('failed to click')
+try:
+    bot = InstaBot()
+    bot.open_browser()
+    bot.login()
 
-    def scroll_and_like(self):
-  
+    time.sleep(5)
 
-        for _ in range(10):  # Scroll through 10 posts
-            try:
-            # Find the Like button (modify XPath if needed)
-                like_buttons = self.driver.find_elements(By.XPATH, "//span[@aria-label='Like']")
-            
-                for like_button in like_buttons:
-                    like_button.click()
-                    print("Liked a post!")
-                    time.sleep(2)  # Pause before scrolling
+    try:
+        WebDriverWait(bot.driver, 5).until(EC.presence_of_element_located((By.NAME, "verificationCode")))
+        code = input("Enter the 6-digit verification code: ")
+        bot.enter_code(code)
+        time.sleep(3)
+    except:
+        print("Two-step verification is not required.")
 
-            # Scroll down using Arrow Down key
-                body = self.driver.find_element(By.TAG_NAME, "body")
-                body.send_keys(Keys.ARROW_DOWN)
-                time.sleep(3)  # Wait for new content to load
+    bot.click_reels()
+    time.sleep(10)
+    bot.scroll_through_reels().click()
+    time.sleep(3)
+    start = 1
+    for _ in range(10):
+        bot.actions.move_to_element(bot.scroll_through_reels()).send_keys(Keys.ARROW_DOWN).perform()
+        
+        time.sleep(2)
+        bot.like_reel().click()
+        print(f"{start}✅ Reel Liked Successfully!")
+        start += 1
+    # Save login info prompt
+    # bot.save_login_info()
+    # time.sleep(2)
 
-            except Exception as e:
-                print("Error:", e)
+    # # Open Messenger
+    # bot.click_messenger()
+    # time.sleep(5)
 
-    
+    # # Disable notification prompt
+    # bot.turn_off_notifications()
+    # time.sleep(5)
 
+
+
+
+except Exception as e:
+    print(f"Error: {e}")
+
+# finally:
+    # bot.close_browser()
